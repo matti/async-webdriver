@@ -1,0 +1,12 @@
+#!/usr/bin/env ruby
+
+require "bundler/setup"
+require "async/webdriver"
+
+client = Async::Webdriver::Client.new endpoint: "http://localhost:9515"
+
+require "pry"
+Pry.config.pager = false
+
+eval ARGV.join(" ") if ARGV.any?
+Pry.start
