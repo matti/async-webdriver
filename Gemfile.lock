@@ -1,14 +1,14 @@
 PATH
   remote: .
   specs:
-    async-webdriver (0.1.0)
+    async-webdriver (0.1.1)
       async-http
       selenium-webdriver
 
 GEM
   remote: https://rubygems.org/
   specs:
-    async (1.12.0)
+    async (1.13.1)
       nio4r (~> 2.3)
       timers (~> 4.1)
     async-http (0.37.7)
