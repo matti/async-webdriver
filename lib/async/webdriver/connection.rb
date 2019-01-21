@@ -2,6 +2,7 @@ require "async"
 require "async/queue"
 require "async/http/internet"
 require "json"
+require "base64"
 
 module Async
   module Webdriver
@@ -25,6 +26,14 @@ module Async
 
       private
 
+      def headers_with_basic_auth(headers)
+        return headers if !@url.include?('@') || headers.any? { |h| h.start_with?('Authorization') }
+
+        credentials = Base64.urlsafe_encode64(@url.split('@').first.gsub(/\w+:\/\//, ''), padding: false)
+
+        headers.concat(["Authorization: Basic #{credentials}"])
+      end
+
       def async_call(method:, path:, headers:, body:nil)
         body_array = case body
         when Hash
@@ -37,7 +46,7 @@ module Async
           @url
         end
 
-        r = @internet.call method.upcase, path_or_url, headers, body_array
+        r = @internet.call method.upcase, path_or_url, headers_with_basic_auth(headers), body_array
 
         body = begin
           JSON.parse r.read
